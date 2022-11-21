@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.On {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
