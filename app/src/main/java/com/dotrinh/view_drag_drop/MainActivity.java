@@ -13,16 +13,22 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener, View.On {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.myimage1).setOnTouchListener(new MyTouchListener());
-        findViewById(R.id.myimage2).setOnTouchListener(new MyTouchListener());
-        findViewById(R.id.myimage3).setOnTouchListener(new MyTouchListener());
-        findViewById(R.id.myimage4).setOnTouchListener(new MyTouchListener());
+        // findViewById(R.id.myimage1).setOnTouchListener(new MyTouchListener());
+        // findViewById(R.id.myimage2).setOnTouchListener(new MyTouchListener());
+        // findViewById(R.id.myimage3).setOnTouchListener(new MyTouchListener());
+        // findViewById(R.id.myimage4).setOnTouchListener(new MyTouchListener());
+
+        findViewById(R.id.myimage1).setOnLongClickListener(this);
+        findViewById(R.id.myimage2).setOnLongClickListener(this);
+        findViewById(R.id.myimage3).setOnLongClickListener(this);
+        findViewById(R.id.myimage4).setOnLongClickListener(this);
+
 
         findViewById(R.id.topleft).setOnDragListener(new MyDragListener());
         findViewById(R.id.topright).setOnDragListener(new MyDragListener());
@@ -31,19 +37,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onLongClick(View myView) {
+        ClipData data = ClipData.newPlainText("", "");
+        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(myView);
+        myView.startDrag(data, shadowBuilder, myView, 0);
+        myView.setVisibility(View.INVISIBLE);
+        return true;
+    }
+
+
     private final class MyTouchListener implements View.OnTouchListener {
 
-        public boolean onTouch(View view, MotionEvent motionEvent) {
+        @Override
+        public boolean onTouch(View myView, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                view.setVisibility(View.INVISIBLE);
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(myView);
+                myView.startDrag(data, shadowBuilder, myView, 0);
+                myView.setVisibility(View.INVISIBLE);
                 return true;
             } else {
                 return false;
             }
         }
+
+
     }
 
     class MyDragListener implements View.OnDragListener {
