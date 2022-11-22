@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         findViewById(R.id.myimage4).setOnLongClickListener(this);
 
 
-        findViewById(R.id.topleft).setOnDragListener(new MyDragListener());
-        findViewById(R.id.topright).setOnDragListener(new MyDragListener());
-        findViewById(R.id.bottomleft).setOnDragListener(new MyDragListener());
-        findViewById(R.id.bottomright).setOnDragListener(new MyDragListener());
+        findViewById(R.id.topleft).setOnDragListener(new MyDragListener());     //set target
+        findViewById(R.id.topright).setOnDragListener(new MyDragListener());    //set target
+        findViewById(R.id.bottomleft).setOnDragListener(new MyDragListener());  //set target
+        findViewById(R.id.bottomright).setOnDragListener(new MyDragListener()); //set target
 
     }
 
@@ -41,13 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public boolean onLongClick(View myView) {
         ClipData data = ClipData.newPlainText("", "");
         View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(myView);
-        myView.startDrag(data, shadowBuilder, myView, 0);
+        myView.startDrag(data, shadowBuilder, myView, 0); //allowing draf this view
         myView.setVisibility(View.INVISIBLE);
         return true;
     }
 
-
-    private final class MyTouchListener implements View.OnTouchListener {
+   /* private final class MyTouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onTouch(View myView, MotionEvent motionEvent) {
@@ -61,9 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 return false;
             }
         }
-
-
-    }
+    }*/
 
     class MyDragListener implements View.OnDragListener {
 
@@ -71,31 +68,40 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         Drawable normalShape = getResources().getDrawable(R.drawable.shape);
 
         @Override
-        public boolean onDrag(View v, DragEvent event) {
+        public boolean onDrag(View myView, DragEvent event) {
             int action = event.getAction();
             switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
+                case DragEvent.ACTION_DRAG_STARTED: {//1
                     // do nothing
                     break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    v.setBackground(enterShape);
+                }
+                case DragEvent.ACTION_DRAG_LOCATION: {//2
+                    LogI("ACTION_DRAG_LOCATION di chuyen trong khu vuc view lang nghe");
                     break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    v.setBackground(normalShape);
-                    break;
-                case DragEvent.ACTION_DROP:
+                }
+                case DragEvent.ACTION_DROP: {//3
                     // Dropped, reassign View to ViewGroup
                     View view = (View) event.getLocalState();
                     ViewGroup owner = (ViewGroup) view.getParent();
                     owner.removeView(view);
-                    LinearLayout container = (LinearLayout) v;
+                    LinearLayout container = (LinearLayout) myView;
                     container.addView(view);
                     view.setVisibility(View.VISIBLE);
                     break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    v.setBackground(normalShape);
-                    LogI("ACTION_DRAG_ENDED");
+                }
+                case DragEvent.ACTION_DRAG_ENDED: {//4
+                    myView.setBackground(normalShape);
+                    LogI("ACTION_DRAG_ENDED ket thuc thanh cong hoac ko thanh cong");
                     break;
+                }
+                case DragEvent.ACTION_DRAG_ENTERED: {//5
+                    myView.setBackground(enterShape);
+                    break;
+                }
+                case DragEvent.ACTION_DRAG_EXITED: {//6
+                    myView.setBackground(normalShape);
+                    break;
+                }
             }
             return true;
         }
