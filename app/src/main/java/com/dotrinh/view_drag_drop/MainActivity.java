@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public boolean onLongClick(View myView) {
         ClipData data = ClipData.newPlainText("", "");
         View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(myView);
-        myView.startDrag(data, shadowBuilder, myView, 0); //allowing draf this view
+        myView.startDrag(data, shadowBuilder, myView, 0); //allowing drag this view
         myView.setVisibility(View.INVISIBLE);
         return true;
     }
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     break;
                 }
                 case DragEvent.ACTION_DRAG_LOCATION: {//2
-                    LogI("ACTION_DRAG_LOCATION di chuyen trong khu vuc view lang nghe");
+                    LogI("ACTION_DRAG_LOCATION di chuyen trong khu vuc view lang nghe " + myView.getId());
                     break;
                 }
                 case DragEvent.ACTION_DROP: {//3
@@ -91,15 +91,17 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 }
                 case DragEvent.ACTION_DRAG_ENDED: {//4
                     myView.setBackground(normalShape);
-                    LogI("ACTION_DRAG_ENDED ket thuc thanh cong hoac ko thanh cong");
+                    LogI("ACTION_DRAG_ENDED ket thuc thanh cong hoac ko thanh cong  " + myView.getId());
                     break;
                 }
                 case DragEvent.ACTION_DRAG_ENTERED: {//5
                     myView.setBackground(enterShape);
+                    LogI("ACTION_DRAG_ENTERED " + myView.getId());
                     break;
                 }
                 case DragEvent.ACTION_DRAG_EXITED: {//6
                     myView.setBackground(normalShape);
+                    LogI("ACTION_DRAG_EXITED " + myView.getId());
                     break;
                 }
             }
